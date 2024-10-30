@@ -6,7 +6,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     feather.replace();
 
     quill = new Quill('#editor', {
-        theme: 'snow'
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'font': [] }],
+                [{ 'align': [] }],
+                ['clean']
+            ]
+        }
     });
 
     const newPostBtn = document.getElementById('newPostBtn');
@@ -16,6 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     newPostBtn.addEventListener('click', () => {
         newPostForm.style.display = 'block';
+        newPostForm.scrollIntoView({ behavior: 'smooth' });
     });
 
     postForm.addEventListener('submit', async (e) => {
@@ -35,6 +45,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     await displayPosts();
+    
+    // Add disco effect
+    setInterval(() => {
+        document.body.style.backgroundColor = getRandomColor();
+    }, 1000);
 });
 
 async function displayPosts() {
@@ -64,4 +79,13 @@ function showSpinner() {
 
 function hideSpinner() {
     document.getElementById('loadingSpinner').style.display = 'none';
+}
+
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
 }
